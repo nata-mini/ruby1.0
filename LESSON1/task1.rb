@@ -1,23 +1,20 @@
-def what_is_your_weight
-  p "Как Вас зовут?"
-  name = gets.chomp.capitalize
-  p "Чему равен Ваш рост (в см)?"
+p 'What is your name?'
+name = gets.chomp.capitalize
+p 'How tall are you (in cm)?'
 
+height = gets.chomp.to_f
+
+while height <= 0
+  p 'Please enter a positive number'
   height = gets.chomp.to_f
-
-  while height <= 0 
-	p 'Для вычисления оптимального веса, пожалуйста, введите положительное число'
-	height = gets.chomp.to_f
-  end
-
-  optimal_weight = height - 110
-
-  if optimal_weight > 0 && name.empty?
-    p "Ваш идельный вес равен #{optimal_weight}кг"
-  elsif optimal_weight > 0
-    p "#{name}, Ваш идельный вес равен #{optimal_weight}кг"
-  else
-    p 'Ваш вес уже оптимальный!'
-  end
 end
 
+optimal_weight = height - 110
+
+if optimal_weight > 0 && name.empty?
+  p "Your ideal weight is #{optimal_weight}kg"
+elsif optimal_weight > 0
+  p "#{name}, Your ideal weight is #{optimal_weight}kg"
+else
+  p 'Your weight is already optimal!'
+end
