@@ -18,7 +18,7 @@ b = retry_gets_chomp('b')
 c = retry_gets_chomp('c')
 side_array_sort = [a, b, c].sort
 
-if a.zero? || b.zero? || c.zero?
+if [a, b, c].any?(&:zero?)
   p 'This is not a triangle. One or more sides are zero'
 elsif a > b + c || b > a + c || c > a + b
   p 'Triangle does not exist'
