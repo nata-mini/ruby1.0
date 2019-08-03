@@ -15,13 +15,12 @@ year = gets.chomp.to_i
 
 def days_before_this_month(month, year)
   days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+  days_in_month[1] = 29 if leap_year?(year)
 
   if month == 1
     0
   else
-    days = days_in_month[0..month - 2].sum
-    days += 1 if leap_year?(year) && month != 2
-    days
+    days_in_month.take(month - 1).sum
   end
 end
 
