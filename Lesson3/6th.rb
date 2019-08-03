@@ -1,26 +1,28 @@
+# frozen_string_literal: true
+
 def price(hash, key)
-  hash[key]['cost'] * hash[key]['count']
+  hash[key][:price] * hash[key][:count]
 end
 
 hash = {}
 
 loop do
-  p 'Enter product name'
+  puts 'Enter product name'
   name = gets.chomp
   break if name.downcase == 'stop'
 
-  p 'Cost = '
+  puts 'Price = '
   cost = gets.chomp.to_f
 
-  p 'Count = '
+  puts 'Count = '
   count = gets.chomp.to_f
 
-  hash[name] = { 'cost' => cost, 'count' => count }
+  hash[name] = { price: cost, count: count }
 end
 
-p hash
+puts hash
 
-hash.keys.each { |key| p "Total cost of #{key} is #{price(hash, key)}" }
+hash.keys.each { |key| puts "Total cost of #{key} is #{price(hash, key)}" }
 
 amount = hash.keys.inject(0) { |sum, key| sum + price(hash, key) }
 p "Total amount is #{amount}"

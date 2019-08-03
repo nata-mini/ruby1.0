@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 array = []
-(10..100).each { |i| array << i if (i % 5).zero? }
+(10..100).step(5) { |i| array << i }
 p array

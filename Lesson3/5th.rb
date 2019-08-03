@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def leap_year?(year)
   (year % 400).zero? || ((year % 4).zero? && (year % 100) != 0)
 end
@@ -12,17 +14,14 @@ p 'Enter year'
 year = gets.chomp.to_i
 
 def days_before_this_month(month, year)
-  months = { 'january': 31, 'february': 28, 'march': 31, 'april': 30,
-             'may': 31, 'june': 30, 'july': 31, 'august': 31,
-             'september': 30, 'october': 31, 'november': 30, 'december': 31 }
-
-  days_in_month = months.values
+  days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
   if month == 1
     0
   else
-    days = days_in_month[0..month - 2].inject(0) { |sum, x| sum + x }
-    days += 1 if leap_year?(year)
+    days = days_in_month[0..month - 2].sum
+    days += 1 if leap_year?(year) && month != 2
+    days
   end
 end
 
