@@ -1,48 +1,5 @@
 # frozen_string_literal: true
 
-class Station
-  attr_reader :name, :trains
-
-  def initialize(name)
-    @name = name
-    @trains = {}
-  end
-
-  def take_train(train)
-    @trains[train] = { number: train.number, type: train.type, cars: train.cars }
-  end
-
-  def trains_count(type)
-    @trains.values.count { |train| train[:type] == type }
-  end
-
-  def send_train(train)
-    @trains.delete(train)
-  end
-end
-
-class Route
-  attr_accessor :route
-
-  def initialize(start, finish)
-    @start = start
-    @finish = finish
-    @route = [start, finish]
-  end
-
-  def add_station(station, position)
-    @route.insert(position - 1, station)
-  end
-
-  def delete_station(station)
-    @route.delete(station)
-  end
-
-  def print_route
-    @route.each { |x| puts x.name }
-  end
-end
-
 class Train
   attr_reader :number, :type, :current_station
   attr_accessor :speed, :cars, :route
