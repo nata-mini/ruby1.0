@@ -16,7 +16,7 @@ class Train
   end
 
   def increase_speed(speed)
-    @speed += speed
+    @speed += speed if speed.positive?
   end
 
   def hook_cars
