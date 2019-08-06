@@ -15,12 +15,16 @@ class Train
     @speed = 0
   end
 
+  def increase_speed(speed)
+    @speed += speed
+  end
+
   def hook_cars
     @speed.zero? ? self.cars += 1 : 'Train speed is not zero'
   end
 
   def unhook_cars
-    speed.zero? ? self.cars -= 1 : 'Train speed is not zero'
+    self.cars -= 1 if ( speed.zero? && self.cars.positive? )
   end
 
   def take_route(route)
