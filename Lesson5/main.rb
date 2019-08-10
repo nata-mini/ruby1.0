@@ -20,35 +20,39 @@ class RailRoadFabric
   end
 
   def user_action
-    case option_number
-    when 1
-      create_train
-    when 2
-      create_wagon
-    when 3
-      create_station
-    when 4
-      create_route
-    when 5
-      change_route('add')
-    when 6
-      change_route('delete')
-    when 7
-      change_train('add')
-    when 8
-      change_train('delete')
-    when 9
-      move_train('next')
-    when 10
-      move_train('previous')
-    when 11
-      station_list
-    when 12
-      trains_on_station
-    when 13
+    loop do
+      case option_number.to_i
+      when 1
+        create_train
+      when 2
+        create_wagon
+      when 3
+        create_station
+      when 4
+        create_route
+      when 5
+        change_route('add')
+      when 6
+        change_route('delete')
+      when 7
+        change_train('add')
+      when 8
+        change_train('delete')
+      when 9
+        move_train('next')
+      when 10
+        move_train('previous')
+      when 11
+        station_list
+      when 12
+        trains_on_station
+      when 13
         train_route
-    else
-      user_action
+      when 14
+        exit
+      else
+        user_action
+      end
     end
   end
 
@@ -66,8 +70,8 @@ class RailRoadFabric
     puts 'Чтобы просмотреть список станций введите 11'
     puts 'Чтобы просмотреть список поездов на станциях введите 12'
     puts 'Чтобы назначить маршрут поезду введите 13'
-
-    gets.to_i
+    puts 'Чтобы выйти введите 14'
+    gets.chomp
   end
 
   def create_train
@@ -78,9 +82,10 @@ class RailRoadFabric
     number = gets.to_i
 
     train =
-      if type == 1
+      case type
+      when 1
         PassengerTrain.new(number)
-      elsif type == 2
+      when 2
         CargoTrain.new(number)
       else
         create_train
@@ -147,12 +152,11 @@ class RailRoadFabric
     station_list
 
     index = gets.to_i
+    station = @stations[index - 1]
 
-    if (1..@stations.length + 1).include? index
-      @stations[index - 1]
-    else
-      select_station
-    end
+    return station if station
+
+    select_station
   end
 
   def select_route
@@ -160,12 +164,11 @@ class RailRoadFabric
     route_list
 
     index = gets.to_i
+    route = @routes[index - 1]
 
-    if (0..@routes.length).include? index
-      @routes[index - 1]
-    else
-      select_route
-    end
+    return route if route
+
+    select_route
   end
 
   def select_train
@@ -173,12 +176,11 @@ class RailRoadFabric
     train_list
 
     index = gets.to_i
+    train = @trains[index - 1]
 
-    if (0..@trains.length).include? index
-      @trains[index - 1]
-    else
-      select_train
-    end
+    return train if train
+
+    select_train
   end
 
   def select_wagon
@@ -186,12 +188,11 @@ class RailRoadFabric
     wagon_list
 
     index = gets.to_i
+    wagon = @wagons[index - 1]
 
-    if (0..@wagons.length).include? index
-      @wagons[index - 1]
-    else
-      select_wagon
-    end
+    return wagon if wagon
+
+    select_wagon
   end
 
   def route_list
@@ -242,3 +243,6 @@ class RailRoadFabric
     train.take_route(route)
   end
 end
+
+rr = RailRoadFabric.new
+rr.user_action

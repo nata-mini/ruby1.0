@@ -2,6 +2,7 @@
 
 class PassengerTrain < Train
   # переопределяю метод приватный => тоже в приватных остается
+
   private
 
   def attach_wagon(wagon)
