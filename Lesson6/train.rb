@@ -7,10 +7,10 @@ class Train
   include Manufacturer
   include InstanceCount
 
-  @@trains ||= []
+  @@trains ||= {}
 
   def self.find(number)
-    @@trains.find { |train| train if train.number == number }
+    @@trains[number]
   end
 
   attr_reader :number, :current_station, :speed, :wagons, :route
@@ -20,7 +20,7 @@ class Train
     @number = number
     @wagons = []
     @speed = 0
-    @@trains << self
+    @@trains[number] = self
     register_instance
   end
 
