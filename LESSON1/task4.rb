@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def number?(string)
   [string.to_f.to_s, string.to_i.to_s].include? string
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def number?(side)
   side.to_f >= 0 && ([side.to_f.to_s, side.to_i.to_s].include? side)
 end

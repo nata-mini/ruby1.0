@@ -24,7 +24,7 @@ class Train
   end
 
   def unhook_cars
-    self.cars -= 1 if ( speed.zero? && self.cars.positive? )
+    self.cars -= 1 if speed.zero? && self.cars.positive?
   end
 
   def take_route(route)

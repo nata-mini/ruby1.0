@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 p 'What is your name?'
 name = gets.chomp.capitalize
 p 'How tall are you (in cm)?'
