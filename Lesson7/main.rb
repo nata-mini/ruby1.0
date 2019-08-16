@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'wagon'
 require_relative 'passenger_wagon'
 require_relative 'cargo_wagon'
@@ -8,7 +10,6 @@ require_relative 'route'
 require_relative 'station'
 
 class RailRoad
-
   def initialize
     @trains = []
     @wagons = []
@@ -18,7 +19,6 @@ class RailRoad
 На протяжении исполнения всей программы при выборе действия или объекта
 0 - вернет Вас в главное меню
 q - завершит исполнение'
-
   end
 
   def main_menu
@@ -27,12 +27,12 @@ q - завершит исполнение'
     puts '2. Перейти в меню управления станциями и маршрутами'
     user_action = get_action_id(2)
     case user_action
-      when 0
-        exit
-      when 1
-        train_control_menu
-      else
-        station_control_menu
+    when 0
+      exit
+    when 1
+      train_control_menu
+    else
+      station_control_menu
     end
   end
 
@@ -48,25 +48,24 @@ q - завершит исполнение'
     train_action = get_action_id(7)
 
     case train_action
-      when 0
-        main_menu
-      when 1
-        create_train(select_train_type)
-      when 2
-        create_wagon(select_wagon_type)
-      when 3
-        change_train('add')
-      when 4
-        change_train('delete')
-      when 5
-        train_route
-      when 6
-        move_train('next')
-      when 7
-        move_train('previous')
+    when 0
+      main_menu
+    when 1
+      create_train(select_train_type)
+    when 2
+      create_wagon(select_wagon_type)
+    when 3
+      change_train('add')
+    when 4
+      change_train('delete')
+    when 5
+      train_route
+    when 6
+      move_train('next')
+    when 7
+      move_train('previous')
     end
   end
-
 
   def station_control_menu
     puts 'Выберите действие'
@@ -77,19 +76,18 @@ q - завершит исполнение'
     station_action = get_action_id(4)
 
     case station_action
-      when 0
-        main_menu
-      when 1
-        create_station
-      when 2
-        create_route
-      when 3
-        change_route('add')
-      when 4
-        change_route('delete')
+    when 0
+      main_menu
+    when 1
+      create_station
+    when 2
+      create_route
+    when 3
+      change_route('add')
+    when 4
+      change_route('delete')
     end
   end
-
 
   def get_action_id(range_final)
     action = gets.chomp
@@ -98,6 +96,7 @@ q - завершит исполнение'
     return main_menu if action == '0'
     raise 'Что-то пошло не так, введите номер действия/объекта из списка' unless action.to_i.to_s == action
     raise 'Введите номер действия/объекта из списка' unless (0..range_final).include? action.to_i
+
     action.to_i
   rescue RuntimeError => e
     puts e.message
@@ -125,7 +124,6 @@ q - завершит исполнение'
 
     index = get_action_id(@wagons.length)
     @wagons[index - 1]
-
   rescue RuntimeError => e
     puts e.message
     train_control_menu
@@ -137,7 +135,6 @@ q - завершит исполнение'
 
     index = get_action_id(@stations.length)
     @stations[index - 1]
-
   rescue RuntimeError => e
     puts e.message
     station_control_menu
@@ -149,7 +146,6 @@ q - завершит исполнение'
 
     index = get_action_id(@routes.length)
     @routes[index - 1]
-
   rescue RuntimeError => e
     puts e.message
     station_control_menu
@@ -176,17 +172,16 @@ q - завершит исполнение'
     number = gets.chomp
 
     train =
-        case type
-          when 1
-            PassengerTrain.new(number)
-          else
-            CargoTrain.new(number)
-        end
+      case type
+      when 1
+        PassengerTrain.new(number)
+      else
+        CargoTrain.new(number)
+      end
     @trains << train
     puts "Пассажирский поезд №#{number} успешно создан" if type == 1
     puts "Грузовой поезд №#{number} успешно создан" if type == 2
     train_control_menu
-
   rescue RuntimeError => e
     puts e.message
     retry
@@ -200,17 +195,16 @@ q - завершит исполнение'
     number = gets.chomp
 
     wagon =
-        case type
-          when 1
-            PassengerWagon.new(number)
-          else
-            CargoWagon.new(number)
-        end
+      case type
+      when 1
+        PassengerWagon.new(number)
+      else
+        CargoWagon.new(number)
+      end
     @wagons << wagon
     puts "Пассажирский вагон №#{number} успешно создан" if type == 1
     puts "Грузовой вагон №#{number} успешно создан" if type == 2
     train_control_menu
-
   rescue RuntimeError => e
     puts e.message
     retry
@@ -233,6 +227,7 @@ q - завершит исполнение'
 
   def create_route
     return puts 'Для создания маршрута необходимо хотя бы две существующих станции' if @stations.length < 2
+
     puts 'Начальная станция:'
     start = select_station
 
@@ -252,24 +247,28 @@ q - завершит исполнение'
 
   def station_list
     raise 'Пока не создано ни одной станции' if @stations.empty?
+
     puts 'Существующие станции:'
     @stations.each.with_index(1) { |station, index| puts "#{index}. #{station.name}" }
   end
 
   def route_list
     raise 'Пока не создано ни одного маршрута' if @routes.empty?
+
     puts 'Существующие маршруты:'
     @routes.each.with_index(1) { |route, index| puts "#{index}. #{route.start.name} -> #{route.finish.name}" }
   end
 
   def train_list
     raise 'Пока не создано ни одного поезда' if @trains.empty?
+
     puts 'Существующие поезда:'
     @trains.each.with_index(1) { |train, index| puts "#{index}. Поезд №#{train.number}. Тип #{train.type}" }
   end
 
   def wagon_list
     raise 'Пока не создано ни одного вагона' if @wagons.empty?
+
     puts 'Существующие вагоны:'
     @wagons.each.with_index(1) { |wagon, index| puts "#{index}.Вагон №#{wagon.number}. Тип #{wagon.type}" }
   end
@@ -323,7 +322,6 @@ q - завершит исполнение'
       train.go_to_previous
       puts "Поезд перемещен на станцию #{train.current_station.name}"
     end
-
   rescue RuntimeError => e
     puts e.message
   ensure
@@ -335,7 +333,6 @@ q - завершит исполнение'
     route = select_route
     train.take_route(route)
     puts "Поезду №#{train.number} назначен маршрут '#{route.start.name}' -> '#{route.finish.name}'"
-
   rescue RuntimeError => e
     puts e.message
   ensure
@@ -345,4 +342,3 @@ end
 
 rr = RailRoad.new
 rr.main_menu
-

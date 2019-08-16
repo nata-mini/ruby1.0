@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require_relative 'instance_count'
+require_relative 'validator'
 
 class Station
   include InstanceCount
+  include Validator
 
-  STATION_NAME_FORMAT = /^\w+$/
+  STATION_NAME_FORMAT = /^\w+$/.freeze
   @@stations = []
 
   def self.all

@@ -2,12 +2,14 @@
 
 require_relative 'manufacturer'
 require_relative 'instance_count'
+require_relative 'validator'
 
 class Train
   include Manufacturer
   include InstanceCount
+  include Validator
 
-  TRAIN_NUMBER_FORMAT = /^[а-яa-z\d]{3}-?[а-яa-z\d]{2}$/i
+  TRAIN_NUMBER_FORMAT = /^[а-яa-z\d]{3}-?[а-яa-z\d]{2}$/i.freeze
 
   @@trains ||= {}
 
@@ -40,11 +42,13 @@ class Train
 
   def attach_wagon!(wagon)
     raise 'Вагон не может быть прицеплен, пока поезд движется' unless stopped?
+
     attach_wagon(wagon)
   end
 
   def detach_wagon!(wagon)
     raise 'Вагон не может быть прицеплен, пока поезд движется' unless stopped?
+
     detach_wagon(wagon)
   end
 
@@ -57,6 +61,7 @@ class Train
   def has_next_station?
     raise 'Поезд не назначен на маршрут' unless @current_station
     raise 'Текущая станция является последней в маршруте' if @current_station == @route.last
+
     true
   end
 
@@ -70,6 +75,7 @@ class Train
   def has_previous_station?
     raise 'Поезд не назначен на маршрут' unless @current_station
     raise 'Текущая станция является первой в маршруте' if @current_station == @route.first
+
     true
   end
 
@@ -82,19 +88,10 @@ class Train
 
   def next_station
     has_next_station?
-    puts "Следующая станция: #{@route[@route.index(@current_station) + 1].name}"
   end
 
   def previous_station
     has_previous_station?
-    puts "Предыдущая станция: #{@route[@route.index(@current_station) - 1].name}"
-  end
-
-  def valid?
-    validate!
-    true
-  rescue
-    false
   end
 
   private
@@ -110,6 +107,7 @@ class Train
 
   def detach_wagon(wagon)
     raise 'Вагон не был прицеплен к данному поезду' unless wagons.include? wagon
+
     @wagons.delete(wagon)
     wagon.detach_from_train(self)
   end
@@ -117,5 +115,4 @@ class Train
   def validate!
     raise 'Неверный формат номера поезда' if number.to_s !~ TRAIN_NUMBER_FORMAT
   end
-
 end

@@ -11,6 +11,7 @@ class PassengerTrain < Train
 
   def attach_wagon(wagon)
     raise 'К этому поезду можно прицепить только пассажирский вагон' unless wagon.class == PassengerWagon
+
     super(wagon)
   end
 end

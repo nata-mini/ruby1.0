@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require_relative 'manufacturer'
+require_relative 'validator'
 
 class Wagon
   include Manufacturer
+  include Validator
 
-  WAGON_NUMBER_FORMAT = /^[а-яa-z\d]{2,}/
+  WAGON_NUMBER_FORMAT = /^[а-яa-z\d]{2,}/.freeze
 
   attr_reader :number, :train
 
@@ -21,6 +23,7 @@ class Wagon
 
   def attach_to_train(train)
     raise "Вагон уже прицеплен к поезду №#{@train.number}" if attached?
+
     @train = train if train.wagons.include? self
   end
 
