@@ -13,9 +13,9 @@ end
 
 optimal_weight = height - 110
 
-if optimal_weight > 0 && name.empty?
+if optimal_weight.positive? && name.empty?
   p "Your ideal weight is #{optimal_weight}kg"
-elsif optimal_weight > 0
+elsif optimal_weight.positive?
   p "#{name}, Your ideal weight is #{optimal_weight}kg"
 else
   p 'Your weight is already optimal!'

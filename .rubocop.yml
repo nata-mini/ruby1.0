@@ -11,7 +11,7 @@ Style/AsciiComments:
   Enabled: false
 
 Metrics/AbcSize:
-  Max: 20
+  Max: 30
 
 Style/Documentation:
   Enabled: false
@@ -21,3 +21,6 @@ Metrics/CyclomaticComplexity:
 
 Metrics/BlockLength:
   Max: 40
+
+Naming/PredicateName:
+ Enabled: false

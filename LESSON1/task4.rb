@@ -23,7 +23,7 @@ D = b**2 - 4 * a * c
 
 if D.zero?
   p "Discriminant = #{D}", "x1 = x2 = #{-b / (2 * a)}"
-elsif D < 0
+elsif D.negative?
   p "Discriminant = #{D}", 'There are no roots'
 else
   sqrt_of_disc = Math.sqrt(D)
