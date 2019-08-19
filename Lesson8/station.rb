@@ -24,7 +24,7 @@ class Station
     register_instance
   end
 
-  def trains_on_stations
+  def each_train
     raise 'На станции нет поездов' if trains.empty?
 
     trains.each { |train| yield train }

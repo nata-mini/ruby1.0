@@ -29,7 +29,7 @@ class Train
     register_instance
   end
 
-  def wagons_list
+  def each_wagon
     raise 'К поезду не прицеплены вагоны' if @wagons.empty?
 
     @wagons.each { |wagon| yield(wagon) }

@@ -284,13 +284,13 @@ q - завершит исполнение'
     raise 'Пока не создано ни одного вагона' if @wagons.empty?
 
     puts 'Существующие вагоны:'
-    @wagons.each.with_index(1) { |wagon, index| puts "#{index}.Вагон №#{wagon.number}. Тип #{wagon.type}" }
+    @wagons.each.with_index(1) { |wagon, index| puts "#{index}. Вагон №#{wagon.number}. Тип #{wagon.type}" }
   end
 
   def station_block(station)
     raise 'Пока не создано ни одной станции' if @stations.empty?
 
-    station.trains_on_stations do |train|
+    station.each_train do |train|
       print "Номер поезда:#{train.number}. Тип:#{train.type}."
       puts "Количество вагонов: #{train.wagons.count}"
     end
@@ -317,10 +317,10 @@ q - завершит исполнение'
   def train_block(train)
     raise 'Пока не создано ни одного поезда' if @trains.empty?
 
-    train.wagons_list do |wagon|
+    train.each_wagon do |wagon|
       print "Номер вагона:#{wagon.number}. Тип:#{wagon.type}."
       if wagon.type == :passenger
-        puts "Количество свободных мест: #{wagon.free_seats_count}. Количество занятых мест: #{wagon.reserved_seats_count}"
+        puts "Количество свободных мест: #{wagon.free_volume}. Количество занятых мест: #{wagon.reserved_volume}"
       else
         puts "Занимаемый объем: #{wagon.reserved_volume}. Свободный объем: #{wagon.free_volume}"
       end
@@ -396,7 +396,7 @@ q - завершит исполнение'
   def take_place_at_wagon
     wagon = select_wagon
     if wagon.type == :passenger
-      wagon.book_seat
+      wagon.book_volume
       puts 'Место успешно забронировано'
     else
       puts 'Какой объем( в куб.м) необходимо занять?'
