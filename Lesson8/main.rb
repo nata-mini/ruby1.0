@@ -45,8 +45,9 @@ q - завершит исполнение'
     puts '5. Назначить маршрут поезду'
     puts '6. Переместить поезд на следующую станцию'
     puts '7. Переместить поезд на предыдущую станцию'
-    puts '8. Посмотреть список поездов'
-    train_action = get_action_id(8)
+    puts '8. Посмотреть список вагонов для поезда'
+    puts '9. Занять место или объем в вагоне'
+    train_action = get_action_id(9)
 
     case train_action
     when 0
@@ -66,7 +67,9 @@ q - завершит исполнение'
     when 7
       move_train('previous')
     when 8
-      full_train_list
+      wagons_of_train
+    when 9
+      take_place_at_wagon
     end
   end
 
@@ -91,7 +94,7 @@ q - завершит исполнение'
     when 4
       change_route('delete')
     when 5
-      full_station_list
+      trains_on_station
     end
   end
 
@@ -125,7 +128,8 @@ q - завершит исполнение'
   end
 
   def select_wagon
-    puts 'Выберите вагон' unless @wagons.empty?
+    raise 'Пока не создано ни одного вагона' if @wagons.empty?
+
     wagon_list
 
     index = get_action_id(@wagons.length)
@@ -283,37 +287,44 @@ q - завершит исполнение'
     @wagons.each.with_index(1) { |wagon, index| puts "#{index}.Вагон №#{wagon.number}. Тип #{wagon.type}" }
   end
 
-  def full_station_list
+  def station_block(station)
     raise 'Пока не создано ни одной станции' if @stations.empty?
 
-    @stations.each do |station|
-      puts station.name
-      station.trains.each do |train|
-        print "Номер поезда:#{train.number}. Тип:#{train.type}."
-        puts "Количество вагонов: #{train.wagons.count}"
-      end
+    station.trains_on_stations do |train|
+      print "Номер поезда:#{train.number}. Тип:#{train.type}."
+      puts "Количество вагонов: #{train.wagons.count}"
     end
+  end
+
+  def trains_on_station
+    station = select_station
+    station_block(station)
   rescue RuntimeError => e
     puts e.message
   ensure
     station_control_menu
   end
 
-  def full_train_list
-    raise 'Пока не создано ни одного поезда' if @trains.empty?
-
-    @trains.each do |train|
-      puts "Номер поезда: #{train.number}"
-      train.wagons.each do |wagon|
-        print "Номер вагона:#{wagon.number}. Тип:#{wagon.type}."
-        puts "Количество свободных мест: #{wagon.free_seats_count}. Количество занятых мест: #{wagon.reserved_seats_count}" if wagon.type == :passenger
-        puts "Занимаемый объем: #{wagon.reserved_volume}. Свободный объем: #{wagon.free_volume}" if wagon.type == :cargo
-      end
-    end
+  def wagons_of_train
+    train = select_train
+    train_block(train)
   rescue RuntimeError => e
     puts e.message
   ensure
     train_control_menu
+  end
+
+  def train_block(train)
+    raise 'Пока не создано ни одного поезда' if @trains.empty?
+
+    train.wagons_list do |wagon|
+      print "Номер вагона:#{wagon.number}. Тип:#{wagon.type}."
+      if wagon.type == :passenger
+        puts "Количество свободных мест: #{wagon.free_seats_count}. Количество занятых мест: #{wagon.reserved_seats_count}"
+      else
+        puts "Занимаемый объем: #{wagon.reserved_volume}. Свободный объем: #{wagon.free_volume}"
+      end
+    end
   end
 
   # Change object
@@ -380,6 +391,22 @@ q - завершит исполнение'
     puts e.message
   ensure
     train_control_menu
+  end
+
+  def take_place_at_wagon
+    wagon = select_wagon
+    if wagon.type == :passenger
+      wagon.book_seat
+      puts 'Место успешно забронировано'
+    else
+      puts 'Какой объем( в куб.м) необходимо занять?'
+      volume = gets.chomp.to_i
+      wagon.book_volume(volume)
+      puts 'Указанный объем успешно занят'
+    end
+  rescue RuntimeError => e
+    puts e.message
+  ensure train_control_menu
   end
 end
 

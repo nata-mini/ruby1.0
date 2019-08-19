@@ -14,9 +14,6 @@ class Station
     @@stations
   end
 
-  def self.set_train_to_block
-    @@stations.each { |station| station.trains.each yield(train) }
-  end
   attr_reader :name, :trains
 
   def initialize(name)
@@ -25,6 +22,12 @@ class Station
     validate!
     @@stations << self
     register_instance
+  end
+
+  def trains_on_stations
+    raise 'На станции нет поездов' if trains.empty?
+
+    trains.each { |train| yield train }
   end
 
   def take_train(train)

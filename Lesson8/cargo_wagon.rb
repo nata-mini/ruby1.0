@@ -9,7 +9,10 @@ class CargoWagon < Wagon
   end
 
   def book_volume(volume)
+    raise 'Нельзя занять место: Вагон еще не прицеплен к поезду' unless attached?
+
     raise 'Недостаточно свободного места' if self.volume[:free] < volume
+
     self.volume[:free] -= volume
   end
 

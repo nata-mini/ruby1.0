@@ -16,6 +16,7 @@ class Train
   def self.find(number)
     @@trains[number]
   end
+
   attr_accessor :number
   attr_reader :current_station, :speed, :wagons, :route
 
@@ -26,6 +27,12 @@ class Train
     validate!
     @@trains[number] = self
     register_instance
+  end
+
+  def wagons_list
+    raise 'К поезду не прицеплены вагоны' if @wagons.empty?
+
+    @wagons.each { |wagon| yield(wagon) }
   end
 
   def stop
