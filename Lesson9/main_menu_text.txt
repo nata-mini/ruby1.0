@@ -1,0 +1,5 @@
+Select an action
+q - complete execution
+1. Trains control menu
+2. Wagons control menu
+3. Stations and Routes control menu

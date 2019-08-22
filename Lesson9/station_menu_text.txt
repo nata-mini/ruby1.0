@@ -1,0 +1,8 @@
+Select an action
+q - complete execution
+0. Main menu
+1. Create a station
+2. Create a route
+3. Add a station to a route
+4. Delete a station from a route
+5. Trains list on a station

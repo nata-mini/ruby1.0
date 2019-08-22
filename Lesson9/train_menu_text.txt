@@ -1,0 +1,8 @@
+Select an action
+q - complete execution
+0. Main menu
+1. Create a train
+2. Assign a Train Route
+3. Move a train to the next station
+4. Move a train to the previous station
+5. Wagon list for a train

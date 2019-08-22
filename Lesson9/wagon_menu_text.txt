@@ -1,0 +1,7 @@
+Select an action
+q - complete execution
+0. Main menu
+1. Create a wagon
+2. Attach a wagon to a train
+3. Detach a wagon from a train
+4. Reserve a seat or volume in a wagon
