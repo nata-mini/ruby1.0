@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'manufacturer'
-require_relative 'instance_count'
 require_relative 'validator'
+require_relative 'accessors'
 
 class Train
-  include Manufacturer
-  include InstanceCount
   include Validator
+  extend Accessors
 
   TRAIN_NUMBER_FORMAT = /^[а-яa-z\d]{3}-?[а-яa-z\d]{2}$/i.freeze
 
@@ -19,8 +17,10 @@ class Train
     end
   end
 
-  attr_accessor :number
+  attr_accessor_with_history :number
   attr_reader :current_station, :speed, :wagons, :route
+
+  validate :number, :format, TRAIN_NUMBER_FORMAT
 
   def initialize(number)
     @number = number.to_s
@@ -28,7 +28,6 @@ class Train
     @speed = 0
     validate!
     self.class.trains[number] = self
-    register_instance
   end
 
   def each_wagon
@@ -116,9 +115,5 @@ class Train
 
     @wagons.delete(wagon)
     wagon.detach_from_train(self)
-  end
-
-  def validate!
-    raise 'Wrong number format' if number.to_s !~ TRAIN_NUMBER_FORMAT
   end
 end
