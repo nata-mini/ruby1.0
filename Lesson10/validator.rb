@@ -31,16 +31,19 @@ module Validator
     def validate_method(val)
       name, validation, rule = val
       var_name = instance_variable_get(name)
-      case validation
-        when :presence
-          raise "#{name} empty or nil" if var_name.to_s.strip == ''
-        when :format
-          raise "Wrong #{name} format" if var_name !~ rule
-        when :type
-          raise "Wrong #{name} class" unless var_name.is_a?(rule)
-        else
-          raise 'Available validation types: presence, format, type'
-      end
+      send(validation.to_s, name, var_name, rule)
+    end
+
+    def presence(name, var_name, *)
+      raise "#{name} empty or nil" if var_name.to_s.strip == ''
+    end
+
+    def format(name, var_name, rule)
+      raise "Wrong #{name} format" if var_name !~ rule
+    end
+
+    def type(name, var_name, rule)
+      raise "Wrong #{name} class" unless var_name.is_a?(rule)
     end
   end
 end
